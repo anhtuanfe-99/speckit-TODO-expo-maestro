@@ -1,0 +1,23 @@
+# spec: specs/001-task-management/spec.md
+# use-case: UC-03
+# ac: AC-1
+# scenario: Task marked as completed
+# test-name: UC-03_AC-1_task-marked-completed
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp:
+    appId: host.exp.Exponent
+- waitForVisible:
+    id: task_input
+- inputText:
+    id: task_input
+    text: "Buy groceries"
+- pressKey: Enter
+- waitForVisible:
+    id: task_item
+- tapOn:
+    id: task_checkbox
+- assertVisible:
+    id: task_completed

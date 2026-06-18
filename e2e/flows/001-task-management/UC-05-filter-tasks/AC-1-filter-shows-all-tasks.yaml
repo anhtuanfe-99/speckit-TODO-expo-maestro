@@ -1,0 +1,36 @@
+# spec: specs/001-task-management/spec.md
+# use-case: UC-05
+# ac: AC-1
+# scenario: Filter shows all tasks
+# test-name: UC-05_AC-1_filter-shows-all-tasks
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp:
+    appId: host.exp.Exponent
+- waitForVisible:
+    id: task_input
+- inputText:
+    id: task_input
+    text: "Active task"
+- pressKey: Enter
+- waitForVisible:
+    id: task_item
+- inputText:
+    id: task_input
+    text: "Completed task"
+- pressKey: Enter
+- waitForVisible:
+    id: task_item
+- tapOn:
+    id: task_checkbox
+    index: 1
+- waitForVisible:
+    id: filter_all
+- tapOn:
+    id: filter_all
+- assertVisible:
+    text: "Active task"
+- assertVisible:
+    text: "Completed task"

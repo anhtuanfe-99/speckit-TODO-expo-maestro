@@ -1,0 +1,28 @@
+# spec: specs/001-task-management/spec.md
+# use-case: UC-02
+# ac: AC-1
+# scenario: Title edited successfully
+# test-name: UC-02_AC-1_title-edited-successfully
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp:
+    appId: host.exp.Exponent
+- waitForVisible:
+    id: task_input
+- inputText:
+    id: task_input
+    text: "Buy groceries"
+- pressKey: Enter
+- waitForVisible:
+    id: task_item
+- tapOn:
+    id: task_title
+- eraseText: 13
+- inputText:
+    id: task_title
+    text: "Buy vegetables"
+- pressKey: Enter
+- assertVisible:
+    text: "Buy vegetables"

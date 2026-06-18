@@ -1,0 +1,17 @@
+# spec: specs/001-task-management/spec.md
+# use-case: UC-01
+# ac: AC-2
+# scenario: Empty title rejected
+# test-name: UC-01_AC-2_empty-title-rejected
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp:
+    appId: host.exp.Exponent
+- waitForVisible:
+    id: task_input
+- tapOn:
+    id: add_task_button
+- assertNotVisible:
+    id: task_item

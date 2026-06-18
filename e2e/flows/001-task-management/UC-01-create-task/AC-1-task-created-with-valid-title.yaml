@@ -1,0 +1,31 @@
+# spec: specs/001-task-management/spec.md
+# use-case: UC-01
+# ac: AC-1
+# scenario: Task created with valid title
+# test-name: UC-01_AC-1_task-created-with-valid-title
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn:
+    text: "speckit-todo-expo-maestro"
+- extendedWaitUntil:
+    visible: "Tasks"
+    timeout: 10000
+
+# Assert the input controls are visible
+- assertVisible:
+    id: "task_input"
+- assertVisible:
+    id: "add_task_button"
+
+# Scenario 1: Add a valid task
+- tapOn:
+    id: "task_input"
+- inputText: "Buy groceries"
+- tapOn:
+    id: "add_task_button"
+- assertVisible:
+    id: "task_item"
+- assertVisible: "Buy groceries"
