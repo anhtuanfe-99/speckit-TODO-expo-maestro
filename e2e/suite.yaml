@@ -1,6 +1,0 @@
-# Test Suite: Speckit Todo App
-# Main test suite aggregating all feature suites
-
-suites:
-  - name: Task Management
-    path: e2e/suites/001-task-management.yaml
