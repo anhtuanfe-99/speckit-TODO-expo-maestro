@@ -1,27 +1,78 @@
-# Architecture Memory
+# Architecture
+<!-- Read by every /speckit.plan run before planning a feature.   -->
+<!-- Set once per project; updated deliberately, not per-feature. -->
 
-**Last Synced**: 2026-06-18
+## Navigation
 
-## Stack
+**Expo Router** — file-based routing.
 
-- Expo SDK 56, React Native 0.85.3, React 19.2.3, TypeScript 6.0
-- Maestro for E2E testing
-- No external state library — React hooks only
+Single route:
+- `app/index.tsx` — main task list screen
 
-## Conventions
+No tab bars, no drawers, no nested layouts. The entire app is one
+screen with a text input at the top, a filter bar, and a scrollable
+task list.
 
-- `testID` in `snake_case` on every interactive element
-- One Maestro flow file per acceptance criterion
-- Spec-flow sync enforced by `e2e/check-sync.sh`
-- Feature numbering is sequential (001, 002, ...)
+## Shared Data Model
 
-## Key Files
+<!-- Entities used by 2+ features only. Feature-specific entities  -->
+<!-- belong in that feature's own spec.md Layer 3.                 -->
 
-| File | Purpose |
-|------|---------|
-| `specs/_project/vision.md` | Project vision and principles |
-| `specs/_project/feature-map.md` | Feature tracking with status |
-| `specs/_project/architecture.md` | Full architecture reference |
-| `App.tsx` | Root component |
-| `e2e/check-sync.sh` | Spec-flow sync validator |
-| `e2e/suite.yaml` | Master test suite |
+### Task
+
+A single actionable item the user wants to track.
+
+**States:** `active` → `completed` (one-way). Deletion removes the
+entity entirely — there is no "trash" or "archived" state.
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | string (uuid) | Primary key. Generated at creation. |
+| `title` | string | Free-text, user-supplied. |
+| `completed` | boolean | `false` = active, `true` = done. |
+| `createdAt` | number (unix ms) | Set once on creation. |
+| `updatedAt` | number (unix ms) | Updated on complete, uncomplete, edit — but v1 has no edit. |
+
+## Storage
+
+**expo-sqlite** — native SQLite via `expo-sqlite`.
+
+Chosen over AsyncStorage because filtering (All / Active / Completed)
+maps directly to a SQL `WHERE` clause and avoids loading every row
+into memory.
+
+Access code location: `src/services/db.ts`
+
+Responsibilities:
+- Schema creation (migrations) on first launch
+- CRUD operations: `insertTask`, `updateTask`, `deleteTask`
+- Query operations: `getTasks(filter)`, `getActiveCount()`
+
+## State Management
+
+**React Context + useReducer.**
+
+Single `TaskContext` provides:
+- `tasks: Task[]` — the current filtered task list
+- `activeCount: number` — count of incomplete tasks
+- `dispatch` — actions: `ADD_TASK`, `TOGGLE_TASK`, `DELETE_TASK`, `SET_FILTER`
+
+The context wraps the entire app in `App.tsx`.
+
+Custom hook: `useTasks()` at `src/hooks/useTasks.ts`
+
+The reducer is the single source of truth after every DB write. On
+app launch, the context initialises state from SQLite via `getTasks`.
+
+## Maestro Mode
+
+See constitution.md §13. Current: `local-expo-go`
+
+## Cross-Cutting Constraints
+
+- Every interactable element MUST have a `testID` in `snake_case`
+  format (see constitution.md §5).
+- Task row testID: `task_row_{task.id}` (UUID-keyed, not index-based).
+- All Maestro flows use `local-expo-go` mode — no dev-client build
+  required. App launch via `maestro: app.launch("com.speckit.todo")`
+  or similar Expo Go bundle ID.

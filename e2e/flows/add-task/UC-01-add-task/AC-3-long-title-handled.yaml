@@ -1,0 +1,25 @@
+# spec: specs/001-add-task/spec.md
+# use-case: UC-01
+# ac: AC-3
+# scenario: User adds a task with a very long title
+# test-name: UC-01_AC-3_long-title-handled
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn:
+    text: "speckit-todo-expo-maestro"
+- extendedWaitUntil:
+    visible: task_input
+    timeout: 10000
+- tapOn:
+    id: task_input
+- inputText: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco"
+- tapOn:
+    id: add_button
+- assertVisible:
+    id: task_checkbox
+    index: 0
+- assertVisible:
+    id: task_input

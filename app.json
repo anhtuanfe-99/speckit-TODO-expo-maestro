@@ -3,6 +3,7 @@
     "name": "speckit-todo-expo-maestro",
     "slug": "speckit-todo-expo-maestro",
     "version": "1.0.0",
+    "scheme": "speckit-todo",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,6 +21,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-sqlite",
+      "expo-router"
+    ]
   }
 }

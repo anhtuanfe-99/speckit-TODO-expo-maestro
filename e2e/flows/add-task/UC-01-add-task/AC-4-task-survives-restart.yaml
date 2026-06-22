@@ -1,0 +1,29 @@
+# spec: specs/001-add-task/spec.md
+# use-case: UC-01
+# ac: AC-4
+# scenario: Task persists after app restart
+# test-name: UC-01_AC-4_task-survives-restart
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn:
+    text: "speckit-todo-expo-maestro"
+- extendedWaitUntil:
+    visible: task_input
+    timeout: 10000
+- tapOn:
+    id: task_input
+- inputText: "Buy groceries"
+- tapOn:
+    id: add_button
+- assertVisible: "Buy groceries"
+- stopApp
+- launchApp
+- tapOn:
+    text: "speckit-todo-expo-maestro"
+- extendedWaitUntil:
+    visible: task_input
+    timeout: 10000
+- assertVisible: "Buy groceries"

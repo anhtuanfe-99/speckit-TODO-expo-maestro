@@ -1,0 +1,23 @@
+# spec: specs/001-add-task/spec.md
+# use-case: UC-01
+# ac: AC-1
+# scenario: User adds a task with a valid title
+# test-name: UC-01_AC-1_add-valid-task
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn:
+    text: "speckit-todo-expo-maestro"
+- extendedWaitUntil:
+    visible: task_input
+    timeout: 10000
+- tapOn:
+    id: task_input
+- inputText: "Buy groceries"
+- tapOn:
+    id: add_button
+- assertVisible: "Buy groceries"
+- assertVisible:
+    id: task_input

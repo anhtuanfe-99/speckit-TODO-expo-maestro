@@ -83,14 +83,20 @@ user to run the missing command first.
 
 **Project-level artifacts must exist before any feature spec:**
 ```
-specs/_project/vision.md
-specs/_project/feature-map.md
-specs/_project/architecture.md   (created by /speckit.architecture)
-.specify/memory/architecture.md
+specs/_project/vision.md         (created by /speckit.vision)
+specs/_project/feature-map.md    (created by /speckit.vision)
+.specify/memory/architecture.md  (created by /speckit.architecture)
 ```
 
 If any are missing when a feature spec is requested: stop, identify
-what is missing, ask the user to create it first.
+what is missing, and tell the user the exact command to run.
+
+**Order of first-time setup (run once per project, in this order):**
+```
+/speckit.vision        →  vision.md, feature-map.md
+/speckit.architecture  →  architecture.md
+/speckit.specify       →  first feature's spec.md
+```
 
 ---
 
@@ -269,6 +275,40 @@ The 4-layer model earns its cost when:
 - The feature has 3 or more use cases, OR
 - E2E tests are mandatory, OR
 - The feature will outlive the first implementation.
+
+
+---
+
+## §13. Maestro Mode
+
+**Current:** `local-expo-go`
+
+The Maestro mode determines how flows launch the app and interact
+with the build pipeline.
+
+| Mode | When to use |
+|---|---|
+| `local-expo-go` | No native modules needed. App launches via Expo Go. |
+| `dev-client` | Custom native modules or config plugins. Requires a dev-client build. |
+| `production` | Testing against a published build (internal distribution or app store). |
+
+### §13.1 Expo Go Project Name
+
+Value: `speckit-todo-expo-maestro` (from `app.json` → `expo.name`)
+
+Used in the launch preamble of every flow: `tapOn: { text: "speckit-todo-expo-maestro" }`
+
+### §13.2 First-Screen Anchor
+
+Value: `task_input`
+
+The testID of the first element that becomes visible after the Expo
+Go project screen is dismissed. Must exist on the initial route
+before any user interaction.
+
+When the anchor testID changes (e.g. during refactoring), update
+this value and regenerate all flow preambles via Protocol B
+(test-change, no spec-change required).
 
 ---
 

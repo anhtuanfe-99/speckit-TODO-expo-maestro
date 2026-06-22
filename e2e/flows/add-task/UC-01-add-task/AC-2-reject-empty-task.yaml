@@ -1,0 +1,24 @@
+# spec: specs/001-add-task/spec.md
+# use-case: UC-01
+# ac: AC-2
+# scenario: User tries to add an empty task
+# test-name: UC-01_AC-2_reject-empty-task
+# protocol: changes require PROTOCOL B
+
+appId: host.exp.Exponent
+---
+- launchApp
+- tapOn:
+    text: "speckit-todo-expo-maestro"
+- extendedWaitUntil:
+    visible: task_input
+    timeout: 10000
+- tapOn:
+    id: task_input
+- tapOn:
+    id: add_button
+- assertVisible:
+    id: task_input
+- assertNotVisible:
+    id: task_checkbox
+    index: 0

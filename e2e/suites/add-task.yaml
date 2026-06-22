@@ -1,0 +1,8 @@
+# Feature: Add Task
+# spec: specs/001-add-task/spec.md
+
+flows:
+  - ../flows/add-task/UC-01-add-task/AC-1-add-valid-task.yaml
+  - ../flows/add-task/UC-01-add-task/AC-2-reject-empty-task.yaml
+  - ../flows/add-task/UC-01-add-task/AC-3-long-title-handled.yaml
+  - ../flows/add-task/UC-01-add-task/AC-4-task-survives-restart.yaml

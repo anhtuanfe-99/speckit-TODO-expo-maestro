@@ -1,0 +1,5 @@
+# Master Test Suite
+# Add feature suites here as they are created
+
+suites:
+  - suites/add-task.yaml
