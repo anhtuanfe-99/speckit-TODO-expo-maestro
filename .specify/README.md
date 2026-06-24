@@ -64,15 +64,6 @@ Commands are dispatched through the active integration (Copilot, Claude, Gemini,
 │   ├── tasks-template.md       # Task breakdown template
 │   ├── checklist-template.md   # Custom checklist template
 │   ├── constitution-template.md
-│   ├── commands/               # Command overrides (custom behavior)
-│   │   ├── specify.md          # /speckit.specify override
-│   │   ├── plan.md             # /speckit.plan override
-│   │   ├── tasks.md            # /speckit.tasks override
-│   │   └── flows.md            # /speckit.flows override (custom command)
-│   └── overrides/              # Additional template overrides
-│       ├── plan-template.md
-│       ├── spec-template.md
-│       └── tasks-template.md
 │
 └── workflows/                  # Workflow definitions
     ├── workflow-registry.json  # Installed workflow registry
@@ -117,21 +108,6 @@ Tracks the active integration (Copilot, Claude, etc.) and version. Contains chec
 ### `init-options.json`
 
 Records the choices made during `specify init`: which AI integration, numbering scheme, script type, etc.
-
----
-
-## Templates & Command Overrides
-
-The `templates/commands/` directory contains **command overrides** that customize how `/speckit.*` commands behave:
-
-| Command | File | Purpose |
-|---------|------|---------|
-| `/speckit.specify` | `commands/specify.md` | Enforces 4-layer model, forwards links, feature-map tracking |
-| `/speckit.plan` | `commands/plan.md` | Derives plan from spec + flows, generates data-model.md |
-| `/speckit.flows` | `commands/flows.md` | Custom command — generates Maestro YAML from Layer 4 ACs |
-| `/speckit.tasks` | `commands/tasks.md` | Generates dependency-ordered task list |
-
-The `templates/overrides/` directory contains alternative templates that take precedence over the defaults in `templates/`.
 
 ---
 

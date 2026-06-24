@@ -266,15 +266,23 @@ Match the model to the task:
 
 ## §12. SDD Scope Rule
 
-Fewer than 2 use cases and single developer only:
-skip `/speckit.flows` and `/speckit.plan`, write a short inline
-spec comment, and use `/speckit.implement` directly.
+§1 mandates E2E tests for every feature — therefore the full
+4-layer chain (`/speckit.specify → .flows → .plan → .tasks →
+.implement`) is always required by default.
 
-The 4-layer model earns its cost when:
-- A non-developer needs to read or correct the spec, OR
-- The feature has 3 or more use cases, OR
-- E2E tests are mandatory, OR
-- The feature will outlive the first implementation.
+The only narrow exception where a lightweight workflow is allowed:
+
+- Single developer, AND
+- Feature has exactly 1 use case, AND
+- E2E tests are explicitly waived (document the reason in spec.md), AND
+- The feature will NOT outlive the first implementation
+
+In that case only: write a short inline spec comment in the source
+and use `/speckit.implement` directly. Skip `/speckit.flows` and
+`/speckit.plan`.
+
+Otherwise — always run the full chain. §1 takes precedence over
+this rule.
 
 
 ---
