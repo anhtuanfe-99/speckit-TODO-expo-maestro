@@ -2,52 +2,11 @@
 description: "Generate Maestro E2E flow files from spec.md Acceptance Criteria (Layer 4). TDD gate: flows written before any code."
 ---
 
-## User Input
+## Hooks: before_flows
+Read `.specify/extensions.yml` → `hooks.before_flows`. Skip disabled (enabled=false), non-empty condition. Optional: prompt user. Mandatory: EXECUTE_COMMAND. No hooks/file → skip.
 
-```text
-$ARGUMENTS
-```
-
-You **MUST** consider the user input before proceeding (if not empty).
-
-## Pre-Execution Checks
-
-**Check for extension hooks (before flows generation)**:
-- Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.before_flows` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- For each executable hook, output the following based on its `optional` flag:
-  - **Optional hook** (`optional: true`):
-    ```
-    ## Extension Hooks
-
-    **Optional Pre-Hook**: {extension}
-    Command: `/{command}`
-    Description: {description}
-
-    Prompt: {prompt}
-    To execute: `/{command}`
-    ```
-  - **Mandatory hook** (`optional: false`):
-    ```
-    ## Extension Hooks
-
-    **Automatic Pre-Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
-
-    Wait for the result of the hook command before proceeding to the Outline.
-    ```
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
-
-## Mandatory syntax grounding (read before generating anything)
-
-Before generating ANY flow file, read in full:
-`.specify/references/maestro/syntax-reference.md`
+## Mandatory: read Maestro syntax reference
+Before generating ANY flow: read `.specify/references/maestro/syntax-reference.md` in full.
 
 This is not optional context — it is the grounding source. Maestro's
 YAML syntax is underrepresented in training data, and without this

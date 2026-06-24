@@ -2,44 +2,15 @@
 description: Establish cross-feature technical architecture (navigation, data model, storage) before any feature spec is written. Runs once per project, after vision, before the first /speckit.specify.
 ---
 
-## User Input
+## Hooks: before_architecture
+Read `.specify/extensions.yml` → `hooks.before_architecture`. Skip disabled (enabled=false), non-empty condition. Optional: prompt user. Mandatory: EXECUTE_COMMAND. No hooks/file → skip.
 
-```text
-$ARGUMENTS
-```
+## Purpose
+Generate `.specify/memory/architecture.md` — cross-feature technical decisions (navigation, data model, storage). Runs once per project, after vision, before first /speckit.specify.
 
-You **MUST** consider the user input before proceeding (if not empty).
+constitution.md = process rules. architecture.md = technical decisions. Distinct.
 
-## Pre-Execution Checks
-
-**Check for extension hooks (before architecture generation)**:
-- Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.before_architecture` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
-
-## What this command does
-
-Generates `.specify/memory/architecture.md` — the cross-feature
-technical decisions every later `/speckit.plan` run reads before
-planning an individual feature. This runs once per project, not
-once per feature. It exists so feature B doesn't reinvent a
-navigation pattern or data-access convention that feature A already
-settled.
-
-This is different from `.specify/memory/constitution.md`:
-- constitution.md = process rules (spec↔E2E contract, protocols,
-  testID format, command order) — never changes per feature.
-- architecture.md = technical decisions (navigation shape, storage
-  layer, shared types, Maestro mode) — set once, can evolve as the
-  project grows, but always by deliberate update, never by a single
-  feature's plan.md silently contradicting it.
-
-## Pre-flight checks
+## Pre-flight
 
 1. Does `specs/_project/vision.md` exist?
    NO → run /speckit.specify for the project vision first.

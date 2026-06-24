@@ -2,41 +2,13 @@
 description: Establish product vision and feature map before any architecture or feature spec work. The first command in the entire workflow — run once per project.
 ---
 
-## User Input
+## Hooks: before_vision
+Read `.specify/extensions.yml` → `hooks.before_vision`. Skip disabled (enabled=false), non-empty condition. Optional: prompt user. Mandatory: EXECUTE_COMMAND. No hooks/file → skip.
 
-```text
-$ARGUMENTS
-```
+## Purpose
+Generate `specs/_project/vision.md` + `feature-map.md`. First command in workflow. NOT a feature spec — answers: why does this product exist, who is it for, what's in v1 vs deferred.
 
-You **MUST** consider the user input before proceeding (if not empty).
-
-## Pre-Execution Checks
-
-**Check for extension hooks (before vision generation)**:
-- Check if `.specify/extensions.yml` exists in the project root.
-- If it exists, read it and look for entries under the `hooks.before_vision` key
-- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
-
-## What this command does
-
-Generates `specs/_project/vision.md` and `specs/_project/feature-map.md`
-— the two project-level artifacts that every other /speckit.* command
-checks for before proceeding. This is the first command run on any
-new project. Nothing else in the workflow can begin without it.
-
-This is NOT a feature spec. It does not use the 4-layer model
-(BR/UC/Entity/AC) — that model is for individual features. Vision
-answers different questions, at the whole-product level:
-- Why does this product exist?
-- Who is it for?
-- What is in v1, and what is explicitly deferred?
-
-## Pre-flight checks
+## Pre-flight
 
 1. Does `specs/_project/vision.md` already exist?
    YES → this is an update, not a first run. Read it in full. Treat
